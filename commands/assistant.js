@@ -10,7 +10,7 @@ module.exports = {
         .setDescription('Your discord bot virtual assistant')
         .addStringOption(artst =>
             artst.setName('prompt')
-                .setDescription('Specified your prompt in detailed!')
+                .setDescription('Specified your prompt for better results')
                 .setRequired(true)),
     async execute(interaction) {
 
