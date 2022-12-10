@@ -1,5 +1,7 @@
-var roles = ["Master","Newbie"]
+const { apiKey, Adminroles } = require('./config.json');
 
-if(roles.some(value => value.includes("Masters"))){
+if(Adminroles.some(value => value.includes("Master"))){
     console.log('True')
 }else console.log("false")
+
+console.log(Adminroles)
