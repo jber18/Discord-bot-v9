@@ -17,7 +17,7 @@ client.once('ready', () => {
 	console.log('SkyNet is Ready!');
 });
 
-client.on('message', async (message:any) => {
+client.on('messageCreate', async (message:any) => {
   if (message.author == client.user) {
     return
   }
