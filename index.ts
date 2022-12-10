@@ -1,6 +1,6 @@
 import { Client, Intents, Collection, MessageEmbed, TextChannel } from 'discord.js';
 import { token, guildId } from './config.json';
-import { madrid_icon } from './commands/strings/string.json'
+import { madrid_icon, author_name } from './commands/strings/string.json'
 import fs from 'fs';
 import { MessageCard } from './commands/lib/msg_card';
 
@@ -28,7 +28,7 @@ client.on('messageCreate', async (message: any) => {
 
 client.on('guildMemberAdd', async (member: any) => {
 	const msg = new MessageCard(
-		'Madrid AI',
+		author_name,
 		'Welcome sa server ka Madrid Fam!',
 		`Hi ${member.user}! Welcome ka dito ka madrid nation!`,
 		'Powered by: Madrid Bot',
