@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { MessageCard } = require('./lib/msg_card');
 const { apiKey } = require('../config.json');
+const { unqualified_roles } = require('./strings/string.json');
 const { Configuration, OpenAIApi } = require('openai');
 
 
@@ -10,7 +11,7 @@ module.exports = {
         .setDescription('Your discord bot virtual assistant')
         .addStringOption(artst =>
             artst.setName('prompt')
-                .setDescription('Specified your prompt for better results')
+                .setDescription('Ask me anything, please be specific')
                 .setRequired(true)),
     async execute(interaction) {
 
@@ -22,7 +23,7 @@ module.exports = {
             ['Master','Moderator','Admin'].some(values => 
                 values.includes(role.name)))) {
 
-            return await interaction.editReply('Sorry you are not qualified to use this feature')
+            return await interaction.editReply(unqualified_roles)
         }
 
         const configuration = new Configuration({
@@ -42,11 +43,10 @@ module.exports = {
             });
 
             const basePromptOutput = baseCompletion.data.choices.pop();
-
             const embed = new MessageCard(
                 cardAuthor = 'Madrid AI',
                 cardTitle = "AI Assistant",
-                cardDescription = `**Prompt:** "***${prompt}***"\n` + 'Response: ```' + basePromptOutput?.text + '```',
+                cardDescription = `${interaction.user}: "***${prompt}***"\n` + 'Response: ```' + basePromptOutput?.text + '```',
                 cardFooter = "Powered by: Open AI",
                 cardThumbnail = madrid_icon,undefined,
                 cardAuthorIcon = madrid_icon,
