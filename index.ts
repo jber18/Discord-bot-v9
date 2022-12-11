@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Client, Collection, Events, GatewayIntentBits, ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { SelectMenu } from './commands/lib/select_menus';
 import { token, MadridFamRoles } from './config.json';
 import { madrid_icon, author_name } from './commands/strings/string.json';
+import { option1 } from './commands/strings/options.json'
 import { MessageCard } from './commands/lib/msg_card';
 
 const client: any = new Client({ intents: [GatewayIntentBits.Guilds, 'GuildMembers'] });
@@ -16,6 +18,7 @@ client.on('messageCreate', async (message: any) => {
 
 
 client.on(Events.GuildMemberAdd, async (member: any) => {
+
 	const msg = new MessageCard(
 		author_name,
 		'Welcome sa server ka Madrid Fam!',
@@ -29,45 +32,17 @@ client.on(Events.GuildMemberAdd, async (member: any) => {
 
 	// // (member.channels.cache.get('961530357495246861') as TextChannel).send({ embeds: [embed]});
 	// member.guild.channels.cache.find((i:any) => i.name === 'general').send({ embeds: [embed]})
+
+	const menu = new SelectMenu(
+		'roles',
+		'Please select your desired topics',
+		option1
+		);
+		
 	
-	member.guild.channels.cache.find((i: any) => i.name === 'general').send({ embeds: [await msg.messageCardGreetings()]})
-	// if (MadridFamRoles.some(values => values.includes(member.values[0]))){
-	// 	await member.update('Your role has been updated to' + member.values[0])
-	// }
-	// const remove_role = member.guild.roles.cache.find((x: any) => x.name === MadridFamRoles.some(values => values.includes(x.name)) );
-	// const add_role = member.guild.roles.cache.find((x: any) => x.name === member.values[0] );
-	// member.roles.remove(remove_role);
-	// member.roles.add(add_role);
-
-
-// const row = new ActionRowBuilder()
-// 		.addComponents(
-// 			new StringSelectMenuBuilder()
-// 				.setCustomId('roles')
-// 				.setPlaceholder('Please select the topic you are interested in')
-// 				.addOptions(
-// 					{
-// 						label: 'Job Hiring',
-// 						description: 'This will prioritize Job hiring and Posting',
-// 						value: 'Jobs',
-// 					},
-// 					{
-// 						label: 'Gaming',
-// 						description: 'For more gaming topics',
-// 						value: 'Gaming',
-// 					},
-// 					{
-// 						label: 'Social Interaction',
-// 						description: 'Social Interaction with other guild members',
-// 						value: 'Social',
-// 					},
-// 					{
-// 						label: 'Programming',
-// 						description: 'More like in Developer side',
-// 						value: 'Programmer',
-// 					}
-// 				),
-// 		);
+	member.guild.channels.cache.find((i: any) => i.name === 'general').send({ embeds: [await msg.messageCardGreetings()], components: [await menu.selectMenu()]})
+	const add_role = member.guild.roles.cache.find((x: any) => x.name === "Newbie" );
+	member.roles.add(add_role);
 
 });
 
@@ -78,10 +53,17 @@ client.on(Events.InteractionCreate, async (interaction:any) => {
 
 	const selected = interaction.values[0];
 	console.log(selected)
+	
+
+	if(MadridFamRoles.some(value => value.includes(selected))){
+		const add_role = interaction.guild.roles.cache.find((x: any) => x.name === selected);
+		interaction.member.roles.add(add_role);
+		console.log(MadridFamRoles.filter(val => val !== selected))
+		
+		await interaction.reply({ content: `${selected} was added as your role!`, ephemeral: true})
+	}
+
 });
-
-
-
 
 
 const commandsPath = path.join(__dirname, 'commands');

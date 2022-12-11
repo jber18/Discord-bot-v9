@@ -1,7 +1,4 @@
-const { apiKey, Adminroles } = require('./config.json');
+var  arr = ['a','b','c'];
 
-if(Adminroles.some(value => value.includes("Master"))){
-    console.log('True')
-}else console.log("false")
-
-console.log(Adminroles)
+arr = arr.filter(e=> e == 'a');
+console.log(arr)
