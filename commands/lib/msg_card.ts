@@ -1,4 +1,4 @@
-import { Client, Intents, Collection, MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 export class MessageCard {
     author: string;
@@ -27,8 +27,8 @@ export class MessageCard {
     //Use for Greetings
     public async messageCardGreetings(){
 
-        const embed = new MessageEmbed()
-        .setColor('GREEN')
+        const embed = new EmbedBuilder()
+        .setColor(0x0099FF)
         .setAuthor({ name : this.author, iconURL: this.authorIcon || undefined})
         .setTitle(this.title)
         .setDescription(this.description)
@@ -42,8 +42,8 @@ export class MessageCard {
     //Use for Messages
     public async messageCardMsgs(){
 
-        const embed = new MessageEmbed()
-        .setColor('RANDOM')
+        const embed = new EmbedBuilder()
+        .setColor(0x0099FF)
         .setAuthor({ name : this.author, iconURL: this.authorIcon})
         .setTitle(this.title)
         .setThumbnail(this.thumbnail)
